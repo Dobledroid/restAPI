@@ -35,9 +35,9 @@ export const getMembresiaUsuarioByUserIdAndType = async (userID, tipoMembresiaID
 
 export const addNewMembresiaUsuario = async (req, res) => {
   // console.log("paramets_addNewMembresiaUsuario", req.body)
-  const { ID_usuario, ID_tipoMembresia, fechaInicio, fechaVencimiento } = req.body;
+  const { ID_usuario, ID_tipoMembresia, fechaInicio, fechaVencimiento, imagenUrl } = req.body;
   
-  if (ID_usuario == null || ID_tipoMembresia == null || fechaInicio == null || fechaVencimiento == null) {
+  if (ID_usuario == null || ID_tipoMembresia == null || fechaInicio == null || fechaVencimiento == null || imagenUrl == null) {
     return res.status(400).json({ msg: 'Solicitud incorrecta. Por favor proporcione todos los campos requeridos' });
   }
   // Formatear las fechas y restar 6 horas
@@ -54,6 +54,7 @@ export const addNewMembresiaUsuario = async (req, res) => {
       .input("ID_tipoMembresia", sql.Int, ID_tipoMembresia)
       .input("fechaInicio", sql.DateTime, fechaInicioFormateada)
       .input("fechaVencimiento", sql.DateTime, fechaVencimientoFormateada)
+      .input("imagenUrl", sql.VarChar, imagenUrl)
       .query(querysMembresiasUsuarios.addNewMembresiaUsuario);
     console.log("response_addNewMembresiaUsuario OK 200")
   } catch (error) {
@@ -78,9 +79,9 @@ export const deleteMembresiaUsuarioById = async (req, res) => {
 export const updateMembresiaUsuarioById = async (req, res) => {
   // console.log("paramets_updateMembresiaUsuarioById", req.body)
 
-  const { ID_usuario, ID_tipoMembresia, fechaInicio, fechaVencimiento } = req.body;
+  const { ID_usuario, ID_tipoMembresia, fechaInicio, fechaVencimiento, imagenUrl } = req.body;
 
-  if (ID_usuario == null || ID_tipoMembresia == null || fechaInicio == null || fechaVencimiento == null) {
+  if (ID_usuario == null || ID_tipoMembresia == null || fechaInicio == null || fechaVencimiento == null || imagenUrl == null) {
     return res.status(400).json({ msg: 'Bad Request. Please provide all required fields' });
   }
 
@@ -95,6 +96,7 @@ export const updateMembresiaUsuarioById = async (req, res) => {
       .input("ID_tipoMembresia", sql.Int, ID_tipoMembresia)
       .input("fechaInicio", sql.DateTime, fechaInicioFormateada)
       .input("fechaVencimiento", sql.DateTime, fechaVencimientoFormateada)
+      .input("imagenUrl", sql.VarChar, imagenUrl)
       .input("ID_membresiaUsuario", req.params.id)
       .query(querysMembresiasUsuarios.updateMembresiaUsuarioById);
       console.log("response_updateMembresiaUsuarioById OK 200")

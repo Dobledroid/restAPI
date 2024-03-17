@@ -39,6 +39,27 @@ export const getProducts = async (req, res) => {
   }
 };
 
+export const getListProductsWithImagen = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query(querys.getListProductsWithImagen);
+    res.json(result.recordset);
+  } catch (error) {
+    console.log("error", error)
+    res.status(500).send(error.message);
+  }
+};
+export const getListProductsWithImagenPrincipal = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query(querys.getListProductsWithImagenPrincipal);
+    res.json(result.recordset);
+  } catch (error) {
+    console.log("error", error)
+    res.status(500).send(error.message);
+  }
+};
+
 export const getAllProductsWithRelations = async (req, res) => {
   try {
     const pool = await getConnection();

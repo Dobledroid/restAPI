@@ -83,6 +83,20 @@
 // };
 export const querys = {
   getAllProducts: "SELECT * FROM Productos",
+  getListProductsWithImagen: `
+  SELECT Productos.*, ImagenesProducto.imagenUrl
+  FROM Productos
+  JOIN ImagenesProducto ON Productos.ID_producto = ImagenesProducto.ID_producto;`,
+  getListProductsWithImagenPrincipal: `
+  SELECT *
+  FROM (
+    SELECT P.*,
+           IP.imagenUrl,
+           ROW_NUMBER() OVER (PARTITION BY P.ID_producto ORDER BY IP.ID_imagen) AS rn
+    FROM Productos P
+    INNER JOIN ImagenesProducto IP ON P.ID_producto = IP.ID_producto
+  ) AS ranked
+  WHERE rn = 1;`,
   getProductById: "SELECT * FROM Productos WHERE ID_producto = @IdProducto",
   addNewProduct: "INSERT INTO Productos (nombre, descripcion, precio, precioDescuento, ID_categoria, ID_subcategoria, ID_marca) VALUES (@nombre, @descripcion, @precio, @precioDescuento, @ID_categoria, @ID_subcategoria, @ID_marca)",
   deleteProduct: "DELETE FROM Productos WHERE ID_producto = @IdProducto",
@@ -204,10 +218,10 @@ export const querysTiposMembresillas = {
 };
 
 export const querysMembresiasUsuarios = {
-  addNewMembresiaUsuario: "INSERT INTO MembresiasUsuarios (ID_usuario, ID_tipoMembresia, fechaInicio, fechaVencimiento) VALUES (@ID_usuario, @ID_tipoMembresia, @fechaInicio, @fechaVencimiento);",
+  addNewMembresiaUsuario: "INSERT INTO MembresiasUsuarios (ID_usuario, ID_tipoMembresia, fechaInicio, fechaVencimiento, imagenUrl) VALUES (@ID_usuario, @ID_tipoMembresia, @fechaInicio, @fechaVencimiento, @imagenUrl);",
   getMembresiaUsuarioByUserId: "SELECT * FROM MembresiasUsuarios WHERE ID_usuario = @ID_usuario;",
   getMembresiaUsuarioByUserIdAndTypeId: "SELECT * FROM MembresiasUsuarios WHERE ID_usuario = @ID_usuario AND ID_tipoMembresia = @ID_tipoMembresia;",
-  updateMembresiaUsuarioById: "UPDATE MembresiasUsuarios SET ID_usuario = @ID_usuario, ID_tipoMembresia = @ID_tipoMembresia, fechaInicio = @fechaInicio, fechaVencimiento = @fechaVencimiento WHERE ID_membresiaUsuario = @ID_membresiaUsuario;",
+  updateMembresiaUsuarioById: "UPDATE MembresiasUsuarios SET ID_usuario = @ID_usuario, ID_tipoMembresia = @ID_tipoMembresia, fechaInicio = @fechaInicio, fechaVencimiento = @fechaVencimiento, imagenUrl = @imagenUrl WHERE ID_membresiaUsuario = @ID_membresiaUsuario;",
   deleteMembresiaUsuarioById: "DELETE FROM MembresiasUsuarios WHERE ID_membresiaUsuario = @ID_membresiaUsuario;"
 };
 

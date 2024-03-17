@@ -7,11 +7,17 @@ import {
   getTotalProducts,
   updateProductById,
   getAllProductsWithRelations,
+  getListProductsWithImagen,
+  getListProductsWithImagenPrincipal
 } from "../controllers/products.controller";
 
 const router = Router();
 
 router.get("/products", getProducts);
+
+router.get("/list-products", getListProductsWithImagen);
+
+router.get("/list-products-imagenPrincipal", getListProductsWithImagenPrincipal);
 
 router.get("/products/relations", getAllProductsWithRelations);
 

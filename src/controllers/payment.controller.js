@@ -3,11 +3,14 @@ import { MERCADOPAGO_API_KEY } from "../config.js";
 import { obtenerFechaHoraActual, calcularFechaVencimiento } from "../utilidades/dateUtils.js";
 import { addNewMembresiaUsuario, updateMembresiaUsuarioById, getMembresiaUsuarioByUserIdAndType } from "./membresiasUsuarios.controller.js"
 import { addNewHistorialMembresia, getHistorialMembresiaByUserIdAndType, getHistorialMembresiaByUserIdAndTypeAndOperacionId } from "./historialMembresias.controller.js"
+import { crearQRMembresia } from "./QR.controller.js"
+
 const userData = require('../utilidades/user.js');
 
 export const createOrder = async (req, res) => {
-  const { ID_usuario, ID_tipoMembresia, nombre, descripcion, costo } = req.body;
-  userData.setUserData(ID_usuario, ID_tipoMembresia);
+  const { ID_usuario, ID_tipoMembresia, nombre, descripcion, costo, correo } = req.body;
+  console.log(" req.body",  req.body)
+  userData.setUserData(ID_usuario, ID_tipoMembresia, correo);
 
   mercadopage.configure({
     access_token: MERCADOPAGO_API_KEY,
@@ -24,7 +27,7 @@ export const createOrder = async (req, res) => {
           quantity: 1,
         },
       ],
-      notification_url: "https://e0d4-200-71-109-54.ngrok-free.app/api/webhook",
+      notification_url: "https://a263-200-71-109-54.ngrok-free.app/api/webhook",
       back_urls: {
         success: "http://localhost:4000/success",
         // pending: "https://e720-190-237-16-208.sa.ngrok.io/pending",
@@ -46,6 +49,7 @@ export const receiveWebhook = async (req, res) => {
 
   try {
     const datosCompra = userData.getUserData();
+    console.log("datosCompra", datosCompra)
     // console.log("Datos que se pasan como parámetros a getHistorialMembresiaByUserIdAndType:");
     // console.log("userID:", userID);
     // console.log("tipoMembresiaID:", tipoMembresiaID);
@@ -76,48 +80,14 @@ export const receiveWebhook = async (req, res) => {
             operacion_total_paid_amount: data.response.transaction_details.total_paid_amount
           }
         });
+        
       }
-      // Verificar si ya existe un registro en HistorialMembresias para el usuario y el tipo de membresía
-      // const existingHistorialMembresia = await getHistorialMembresiaByUserIdAndType(datosCompra.userID, datosCompra.tipoMembresiaID);
 
-      // if (existingHistorialMembresia) {
-      //   console.log('La membresía ya está registrada para este usuario y tipo de membresía.')
-      //   // return res.status(400).json({ msg: 'La membresía ya está registrada para este usuario y tipo de membresía.' });
-      //   const responseUpdateHistorialMembresia = await updateHistorialMembresiaById({
-      //     params: { id: existingHistorialMembresia.ID_historialMembresia},
-      //     body: {
-      //       ID_usuario: datosCompra.userID,
-      //       ID_tipoMembresia: datosCompra.tipoMembresiaID,
-      //       fechaInicio: fechaHoraActual,
-      //       fechaVencimiento: fechaVencimiento,
-      //       precio: data.response.transaction_details.total_paid_amount,
-      //       operacion_id: data.response.id,
-      //       operacion_status: data.response.status,
-      //       operacion_status_detail: data.response.status_detail,
-      //       operacion_description: data.response.description,
-      //       operacion_total_paid_amount: data.response.transaction_details.total_paid_amount
-      //     }
-      //   });
-      // } else {
-      //   // Si no existe un registro, insertar en HistorialMembresias
-      //   const responseHistorialMembresia = await addNewHistorialMembresia({
-      //     body: {
-      //       ID_usuario: datosCompra.userID,
-      //       ID_tipoMembresia: datosCompra.tipoMembresiaID,
-      //       fechaInicio: fechaHoraActual,
-      //       fechaVencimiento: fechaVencimiento,
-      //       precio: data.response.transaction_details.total_paid_amount,
-      //       operacion_id: data.response.id,
-      //       operacion_status: data.response.status,
-      //       operacion_status_detail: data.response.status_detail,
-      //       operacion_description: data.response.description,
-      //       operacion_total_paid_amount: data.response.transaction_details.total_paid_amount
-      //     }
-      //   });
-      // }
+
 
       // Verificar si ya existe un registro en MembresiasUsuarios para el usuario y el tipo de membresía
       const existingMembresiaUsuario = await getMembresiaUsuarioByUserIdAndType(datosCompra.userID, datosCompra.tipoMembresiaID);
+
 
       if (existingMembresiaUsuario) {
         // Si ya existe un registro, actualizar el registro existente
@@ -127,19 +97,35 @@ export const receiveWebhook = async (req, res) => {
             ID_usuario: datosCompra.userID,
             ID_tipoMembresia: datosCompra.tipoMembresiaID,
             fechaInicio: fechaHoraActual,
-            fechaVencimiento: fechaVencimiento
+            fechaVencimiento: fechaVencimiento,
+            imagenUrl: existingMembresiaUsuario.imagenUrl
+            // imagenUrl: "existingMembresiaUsuario.imagenUrl"
           }
         });
       } else {
+        const responseCrearQRMembresiaImagenUrl = await crearQRMembresia({
+          body: {
+            ID_usuario: datosCompra.userID,
+            fechaInicio: fechaHoraActual,
+            fechaVencimiento: fechaVencimiento,
+            ID_tipoMembresia: datosCompra.tipoMembresiaID,
+            email: datosCompra.correo
+          }
+        });
+  
+        console.log("responseCrearQRMembresiamagenUrl", responseCrearQRMembresiaImagenUrl);
         // Si no existe un registro, insertar en MembresiasUsuarios
         const responseMembresiaUsuario = await addNewMembresiaUsuario({
           body: {
             ID_usuario: datosCompra.userID,
             ID_tipoMembresia: datosCompra.tipoMembresiaID,
             fechaInicio: fechaHoraActual,
-            fechaVencimiento: fechaVencimiento
+            fechaVencimiento: fechaVencimiento,
+            imagenUrl: responseCrearQRMembresiaImagenUrl
+            // imagenUrl: "responseCrearQRMembresiaImagenUrl"
           }
         });
+
       }
     }
 

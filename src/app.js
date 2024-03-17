@@ -15,7 +15,9 @@ import tiposMembresias from "./routes/tiposMembresias.routes.js";
 import membresiasUsuarios from "./routes/membresiasUsuarios.routes.js";
 import historialMembresias from "./routes/historialMembresias.routes.js";
 import date from "./routes/date.routes.js";
-// import cloudinaryRoutes from "./routes/cloudinary.routes";
+import prueba from "./routes/prueba.routes.js";
+import QRRoutes from "./routes/QR.routes.js";
+import cloudinaryRoutes from "./routes/cloudinary.routes";
 import morgan from "morgan";
 
 import config from "./config";
@@ -50,7 +52,7 @@ app.use("/api", productRoutes);
 app.use("/api", usersRoutes);
 app.use("/api", emailRoutes);
 app.use("/api", sendMethod);
-// app.use("/api", cloudinaryRoutes);
+app.use("/api", cloudinaryRoutes);
 app.use("/api", TokenRoutes);
 app.use("/api", categoriasProdutosRoutes);
 app.use("/api", subcategoriasProductosRoutes);
@@ -62,4 +64,7 @@ app.use("/api", tiposMembresias);
 app.use("/api", membresiasUsuarios);
 app.use("/api", historialMembresias);
 app.use("/api", date);
+app.use("/api", prueba);
+app.use("/api", QRRoutes);
+
 export { app };
