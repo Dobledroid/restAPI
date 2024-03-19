@@ -8,7 +8,8 @@ import {
   updateProductById,
   getAllProductsWithRelations,
   getListProductsWithImagen,
-  getListProductsWithImagenPrincipal
+  getListProductsWithImagenPrincipal,
+  getProductByIdWithImagens
 } from "../controllers/products.controller";
 
 const router = Router();
@@ -26,6 +27,8 @@ router.post("/products", createNewProduct);
 router.get("/products/count", getTotalProducts);
 
 router.get("/products/:id", getProductById);
+
+router.get("/products-with-imagens/:id", getProductByIdWithImagens);
 
 router.delete("/products/:id", deleteProductById);
 

@@ -60,6 +60,7 @@ export const getListProductsWithImagenPrincipal = async (req, res) => {
   }
 };
 
+
 export const getAllProductsWithRelations = async (req, res) => {
   try {
     const pool = await getConnection();
@@ -125,6 +126,21 @@ export const getProductById = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
+
+export const getProductByIdWithImagens = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const result = await pool
+    .request()
+    .input("ID_producto", req.params.id)
+    .query(querys.getProductByIdWithImagens);
+    res.json(result.recordset);
+  } catch (error) {
+    console.log("error", error)
+    res.status(500).send(error.message);
+  }
+};
+
 
 export const deleteProductById = async (req, res) => {
   try {

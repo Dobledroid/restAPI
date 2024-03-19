@@ -98,6 +98,10 @@ export const querys = {
   ) AS ranked
   WHERE rn = 1;`,
   getProductById: "SELECT * FROM Productos WHERE ID_producto = @IdProducto",
+  getProductByIdWithImagens: `SELECT Productos.*, ImagenesProducto.imagenUrl
+  FROM Productos
+  JOIN ImagenesProducto ON Productos.ID_producto = ImagenesProducto.ID_producto
+  WHERE Productos.ID_producto = @ID_producto;`,
   addNewProduct: "INSERT INTO Productos (nombre, descripcion, precio, precioDescuento, ID_categoria, ID_subcategoria, ID_marca) VALUES (@nombre, @descripcion, @precio, @precioDescuento, @ID_categoria, @ID_subcategoria, @ID_marca)",
   deleteProduct: "DELETE FROM Productos WHERE ID_producto = @IdProducto",
   getTotalProducts: "SELECT COUNT(*) FROM Productos",
@@ -243,3 +247,24 @@ WHERE HM.ID_usuario = @ID_usuario;
   deleteHistorialMembresiaById: "DELETE FROM HistorialMembresias WHERE ID_historialMembresia = @ID_historialMembresia;"
 };
 
+export const querysCarritoCompras = {
+  addNewItem: "INSERT INTO CarritoCompras (ID_usuario, ID_producto, cantidad) VALUES (@ID_usuario, @ID_producto, @cantidad);",
+  getItemsByUserID: `SELECT *
+  FROM (
+    SELECT CC.*,
+        P.nombre,
+        p.existencias,
+        P.precioFinal,
+        IP.imagenUrl,
+           ROW_NUMBER() OVER (PARTITION BY CC.ID_carrito ORDER BY IP.ID_imagen) AS rn
+    FROM CarritoCompras CC
+    INNER JOIN Productos P ON CC.ID_producto = P.ID_producto
+    INNER JOIN ImagenesProducto IP ON P.ID_producto = IP.ID_producto
+    WHERE CC.ID_usuario = @ID_usuario
+  ) AS ranked
+  WHERE rn = 1;`,
+  deleteItemByID: "DELETE FROM CarritoCompras WHERE ID_carrito = @ID_carrito;",
+  updateItemQuantityByID: "UPDATE CarritoCompras SET cantidad = @cantidad WHERE ID_carrito = @ID_carrito;",
+  getCartItemByIds: "SELECT * FROM CarritoCompras WHERE ID_usuario = @ID_usuario AND ID_producto = @ID_producto;",
+  updateCartItem: "UPDATE CarritoCompras SET cantidad = @cantidad WHERE ID_usuario = @ID_usuario AND ID_producto = @ID_producto;",
+};
