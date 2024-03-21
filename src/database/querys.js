@@ -281,6 +281,4 @@ export const querysPregunta = {
   getPreguntaByIdUser: "SELECT * FROM PreguntasSecretas WHERE ID_usuario = @IdUsuario",
   insertarPregunta: "INSERT INTO PreguntasSecretas (ID_usuario, pregunta, respuesta) VALUES (@IdUsuario, @pregunta, @respuesta)",
   getPreguntaByUserAndDetails: "SELECT * FROM PreguntasSecretas WHERE ID_usuario = @IdUsuario AND pregunta = @pregunta AND respuesta = @respuesta"
-
-
 }

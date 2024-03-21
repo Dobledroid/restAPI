@@ -1,5 +1,4 @@
-import { getConnection } from "../database";
-import {querysPregunta} from "../database/querys";
+import { getConnection, querysPregunta} from "../database";
 
 export const getPreguntas = async (req, res) => {
     try {
