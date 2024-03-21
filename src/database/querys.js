@@ -276,3 +276,11 @@ export const querysDireccionEnvio = {
   updateDireccionByID: "UPDATE DireccionesEnvio SET nombre = @nombre, apellidos = @apellidos, pais = @pais, direccion = @direccion, ciudad = @ciudad, estado = @estado, codigoPostal = @codigoPostal, telefono = @telefono, correoElectronico = @correoElectronico, referencias = @referencias WHERE ID_direccion = @ID_direccion;",
   deleteDireccionByID: "DELETE FROM DireccionesEnvio WHERE ID_direccion = @ID_direccion;"
 };
+export const querysPregunta = {
+  getAllPreguntas: "SELECT * FROM PreguntasSecretas",
+  getPreguntaByIdUser: "SELECT * FROM PreguntasSecretas WHERE ID_usuario = @IdUsuario",
+  insertarPregunta: "INSERT INTO PreguntasSecretas (ID_usuario, pregunta, respuesta) VALUES (@IdUsuario, @pregunta, @respuesta)",
+  getPreguntaByUserAndDetails: "SELECT * FROM PreguntasSecretas WHERE ID_usuario = @IdUsuario AND pregunta = @pregunta AND respuesta = @respuesta"
+
+
+}
