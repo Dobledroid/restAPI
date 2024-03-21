@@ -11,3 +11,4 @@ export { querysTiposMembresillas } from "./querys";
 export { querysMembresiasUsuarios } from "./querys";
 export { querysHistorialMembresias } from "./querys";
 export { querysCarritoCompras } from "./querys";
+export { querysDireccionEnvio } from "./querys";

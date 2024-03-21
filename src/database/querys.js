@@ -268,3 +268,11 @@ export const querysCarritoCompras = {
   getCartItemByIds: "SELECT * FROM CarritoCompras WHERE ID_usuario = @ID_usuario AND ID_producto = @ID_producto;",
   updateCartItem: "UPDATE CarritoCompras SET cantidad = @cantidad WHERE ID_usuario = @ID_usuario AND ID_producto = @ID_producto;",
 };
+
+export const querysDireccionEnvio = {
+  addNewDireccion: "INSERT INTO DireccionesEnvio (ID_usuario, nombre, apellidos, pais, direccion, ciudad, estado, codigoPostal, telefono, correoElectronico, referencias) VALUES (@ID_usuario, @nombre, @apellidos, @pais, @direccion, @ciudad, @estado, @codigoPostal, @telefono, @correoElectronico, @referencias);",
+  getDireccionByID: "SELECT * FROM DireccionesEnvio WHERE ID_direccion = @ID_direccion;",
+  getDireccionesByUserID: "SELECT * FROM DireccionesEnvio WHERE ID_usuario = @ID_usuario;",
+  updateDireccionByID: "UPDATE DireccionesEnvio SET nombre = @nombre, apellidos = @apellidos, pais = @pais, direccion = @direccion, ciudad = @ciudad, estado = @estado, codigoPostal = @codigoPostal, telefono = @telefono, correoElectronico = @correoElectronico, referencias = @referencias WHERE ID_direccion = @ID_direccion;",
+  deleteDireccionByID: "DELETE FROM DireccionesEnvio WHERE ID_direccion = @ID_direccion;"
+};
