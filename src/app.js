@@ -20,7 +20,7 @@ import date from "./routes/date.routes.js";
 import prueba from "./routes/prueba.routes.js";
 import QRRoutes from "./routes/QR.routes.js";
 import cloudinaryRoutes from "./routes/cloudinary.routes";
-
+import preguntaRoutes from "./routes/pregunta.routes.js";
 import morgan from "morgan";
 
 import config from "./config";
@@ -71,5 +71,5 @@ app.use("/api", direccionEnvio);
 app.use("/api", date);
 app.use("/api", prueba);
 app.use("/api", QRRoutes);
-
+app.use("/api",preguntaRoutes);
 export { app };
