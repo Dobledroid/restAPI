@@ -1,20 +1,21 @@
 import { config } from "dotenv";
 config();
 
-// export default {
-//   port: process.env.PORT || 4000,
-//   dbUser: process.env.DB_USER || "user1",
-//   dbPassword: process.env.DB_PASSWORD || "carlos",
-//   dbServer: process.env.DB_SERVER || "localhost",
-//   dbDatabase: process.env.DB_DATABASE || "SportGYM",
-// };
 export default {
   port: process.env.PORT || 4000,
-  dbUser: process.env.DB_USER || "user1",
-  dbPassword: process.env.DB_PASSWORD || "Yarayerena2018",
+  dbUser: process.env.DB_USER || "carlos",
+  dbPassword: process.env.DB_PASSWORD || "carlos",
   dbServer: process.env.DB_SERVER || "localhost",
   dbDatabase: process.env.DB_DATABASE || "SportGYM",
 };
+
+// export default {
+//   port: process.env.PORT || 4000,
+//   dbUser: process.env.DB_USER || "user1",
+//   dbPassword: process.env.DB_PASSWORD || "Yarayerena2018",
+//   dbServer: process.env.DB_SERVER || "localhost",
+//   dbDatabase: process.env.DB_DATABASE || "SportGYM",
+// };
 
 // export default {
 //   port: process.env.PORT || 4000,
